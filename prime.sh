@@ -6,9 +6,9 @@ IS_AWAKE=false
 
 while [ $IS_AWAKE == false ]; do
     set +e
-    RESULT=$(curl -so /dev/null -w '%{http_code}' "$CONSUL_URL/v1/status/leader")
+    LEADER=$(curl -s "$CONSUL_URL/v1/status/leader")
     set -e
-    if [ "$RESULT" == "200" ]; then
+    if [ "$LEADER" == '"127.0.0.1:8300"' ]; then
         echo "Consul awake at $(date "+%Y-%m-%d %H:%M:%S")"
         IS_AWAKE=true
     else
